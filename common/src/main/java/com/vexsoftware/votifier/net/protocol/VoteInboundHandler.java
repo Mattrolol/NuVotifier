@@ -28,12 +28,29 @@ public class VoteInboundHandler extends SimpleChannelInboundHandler<Vote> {
     protected void channelRead0(ChannelHandlerContext ctx, final Vote vote) throws Exception {
         VotifierSession session = ctx.channel().attr(VotifierSession.KEY).get();
 
-        handler.onVoteReceived(vote, session.getVersion(), ctx.channel().remoteAddress().toString());
+        // Determine the source address based on HAProxy usage
+        String sourceAddress;
+        if (session.isHaProxyUsed()) {
+            sourceAddress = session.getClientIp() + ":" + session.getClientPort();
+
+            // Log the source of the vote record with HAProxy protocol version and Votifier protocol version
+            //System.out.println("Got a HAProxy (" + session.getHaProxyProtocolVersion() + ") protocol " + session.getVersion() + " vote record from source IP: " + sourceAddress);
+        } else {
+            sourceAddress = ctx.channel().remoteAddress().toString(); // Fallback to direct remote address
+            //System.out.println("Got a protocol " + session.getVersion() + " vote record from direct client: " + sourceAddress);
+        }
+
+        // Handle the received vote through the VoteHandler
+        handler.onVoteReceived(vote, session.getVersion(), sourceAddress);
+
+        // Complete the vote process for the Votifier protocol
         session.completeVote();
 
         if (session.getVersion() == VotifierSession.ProtocolVersion.ONE) {
+            // For protocol v1, close the connection immediately
             ctx.close();
         } else {
+            // For protocol v2, respond with an "ok" status
             JsonObject object = new JsonObject();
             object.addProperty("status", "ok");
             ctx.writeAndFlush(GsonInst.gson.toJson(object) + "\r\n").addListener(ChannelFutureListener.CLOSE);

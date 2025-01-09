@@ -8,6 +8,10 @@ public class VotifierSession {
     private ProtocolVersion version = ProtocolVersion.UNKNOWN;
     private final String challenge;
     private boolean hasCompletedVote = false;
+    private boolean haProxyUsed = false;
+    private String haProxyProtocolVersion;
+    private String clientIp;
+    private int clientPort;
 
     public VotifierSession() {
         challenge = TokenUtil.newToken();
@@ -37,6 +41,38 @@ public class VotifierSession {
 
     public boolean hasCompletedVote() {
         return hasCompletedVote;
+    }
+
+    public boolean isHaProxyUsed() {
+        return haProxyUsed;
+    }
+
+    public String getHaProxyProtocolVersion() {
+        return haProxyProtocolVersion;
+    }
+
+    public void setHaProxyProtocolVersion(String haProxyProtocolVersion) {
+        this.haProxyProtocolVersion = haProxyProtocolVersion;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+    }
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientPort(int clientPort) {
+        this.clientPort = clientPort;
+    }
+
+    public int getClientPort() {
+        return clientPort;
+    }
+
+    public void setHaProxyUsed(boolean haProxyUsed) {
+        this.haProxyUsed = haProxyUsed;
     }
 
     public enum ProtocolVersion {

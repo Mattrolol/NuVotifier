@@ -1,8 +1,6 @@
 package com.vexsoftware.votifier.net;
 
-import com.vexsoftware.votifier.net.protocol.VoteInboundHandler;
-import com.vexsoftware.votifier.net.protocol.VotifierGreetingHandler;
-import com.vexsoftware.votifier.net.protocol.VotifierProtocolDifferentiator;
+import com.vexsoftware.votifier.net.protocol.*;
 import com.vexsoftware.votifier.platform.VotifierPlugin;
 import com.vexsoftware.votifier.support.forwarding.cache.VoteCache;
 import com.vexsoftware.votifier.support.forwarding.proxy.ProxyForwardingVoteSource;
@@ -21,7 +19,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.FastThreadLocalThread;
-import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -80,6 +77,7 @@ public class VotifierServerBootstrap {
                     protected void initChannel(SocketChannel channel) {
                         channel.attr(VotifierSession.KEY).set(new VotifierSession());
                         channel.attr(VotifierPlugin.KEY).set(plugin);
+                        channel.pipeline().addLast("haProxyProtocolDifferentiator", new HAProxyProtocolDifferentiator());
                         channel.pipeline().addLast("greetingHandler", VotifierGreetingHandler.INSTANCE);
                         channel.pipeline().addLast("protocolDifferentiator", new VotifierProtocolDifferentiator(false, !v1Disable));
                         channel.pipeline().addLast("voteHandler", voteInboundHandler);
