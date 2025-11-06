@@ -100,8 +100,7 @@ public class NuVotifier implements VoteHandler, VotifierPlugin, ForwardedVoteLis
             }
 
             this.bootstrap = new VotifierServerBootstrap(host, port, this, disablev1);
-            this.bootstrap.start(err -> {
-            });
+            this.bootstrap.start(error -> {}, ConfigLoader.getSpongeConfig().enableHAProxy);
         } else {
             getLogger().info("------------------------------------------------------------------------------");
             getLogger().info("Your Votifier port is less than 0, so we assume you do NOT want to start the");

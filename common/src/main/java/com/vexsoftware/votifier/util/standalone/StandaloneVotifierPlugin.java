@@ -44,7 +44,7 @@ public class StandaloneVotifierPlugin implements VotifierPlugin {
             bootstrap.shutdown();
         }
         this.bootstrap = new VotifierServerBootstrap(bind.getHostString(), bind.getPort(), this, v1Key == null);
-        this.bootstrap.start(error);
+        this.bootstrap.start(error, false);
     }
 
     @Override

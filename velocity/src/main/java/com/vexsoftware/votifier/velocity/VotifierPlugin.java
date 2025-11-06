@@ -124,8 +124,7 @@ public class VotifierPlugin implements VoteHandler, ProxyVotifierPlugin {
         }
 
         this.bootstrap = new VotifierServerBootstrap(host, port, this, disablev1);
-        this.bootstrap.start(err -> {
-        });
+        this.bootstrap.start(error -> {}, config.getBoolean("haproxy-protocol", false));
 
         Toml fwdCfg = config.getTable("forwarding");
         String fwdMethod = fwdCfg.getString("method", "none").toLowerCase();

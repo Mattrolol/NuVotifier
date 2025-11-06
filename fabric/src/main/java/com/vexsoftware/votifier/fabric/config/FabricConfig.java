@@ -11,6 +11,8 @@ public class FabricConfig {
 
     public int port = 8192;
 
+    public boolean enableHAProxy = false;
+
     public boolean debug = true;
 
     public boolean disableV1Protocol = false;

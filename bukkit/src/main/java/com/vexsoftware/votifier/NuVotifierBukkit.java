@@ -235,7 +235,7 @@ public class NuVotifierBukkit extends JavaPlugin implements VoteHandler, Votifie
             }
 
             this.bootstrap = new VotifierServerBootstrap(host, port, this, disablev1);
-            this.bootstrap.start(error -> {});
+            this.bootstrap.start(error -> {}, cfg.getBoolean("haproxy.enabled", false));
         } else {
             getLogger().info("------------------------------------------------------------------------------");
             getLogger().info("Your Votifier port is less than 0, so we assume you do NOT want to start the");

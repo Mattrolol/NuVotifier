@@ -28,8 +28,8 @@ public class VoteInboundHandler extends SimpleChannelInboundHandler<Vote> {
     protected void channelRead0(ChannelHandlerContext ctx, final Vote vote) throws Exception {
         VotifierSession session = ctx.channel().attr(VotifierSession.KEY).get();
 
-        handler.onVoteReceived(vote, session.getVersion(), ctx.channel().remoteAddress().toString());
-        session.completeVote();
+        String clientAddress = session.getRealClientAddress() != null ? session.getRealClientAddress() + ":" + session.getRealClientPort() : ctx.channel().remoteAddress().toString();
+        handler.onVoteReceived(vote, session.getVersion(), clientAddress);
 
         if (session.getVersion() == VotifierSession.ProtocolVersion.ONE) {
             ctx.close();

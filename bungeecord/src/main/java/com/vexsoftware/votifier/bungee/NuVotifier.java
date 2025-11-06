@@ -203,7 +203,7 @@ public class NuVotifier extends Plugin implements VoteHandler, ProxyVotifierPlug
         // Must set up server asynchronously due to BungeeCord goofiness.
         FutureTask<?> initTask = new FutureTask<>(Executors.callable(() -> {
             this.bootstrap = new VotifierServerBootstrap(host, port, NuVotifier.this, disablev1);
-            this.bootstrap.start(err -> {});
+            this.bootstrap.start(error -> {}, configuration.getBoolean("haproxy.enabled", false));
         }));
         getProxy().getScheduler().runAsync(this, initTask);
         try {

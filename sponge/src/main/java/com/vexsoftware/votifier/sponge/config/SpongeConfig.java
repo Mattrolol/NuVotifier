@@ -18,6 +18,10 @@ public class SpongeConfig {
     @Setting(comment = "Port to listen for new votes on")
     public int port = 8192;
 
+    @Setting(comment = "Whether to enable HAProxy support. Enable this if NuVotifier is behind a HAProxy load balancer.\n" +
+            "This allows HAProxy to forward the real client IP address.")
+    public boolean enableHAProxy = false;
+
     @Setting(comment = "Whether or not to print debug messages. In a production system, this should be set to false.\n" +
             "This is useful when initially setting up NuVotifier to ensure votes are being delivered.")
     public boolean debug = true;

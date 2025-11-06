@@ -8,6 +8,8 @@ public class VotifierSession {
     private ProtocolVersion version = ProtocolVersion.UNKNOWN;
     private final String challenge;
     private boolean hasCompletedVote = false;
+    private String realClientAddress;
+    private int realClientPort;
 
     public VotifierSession() {
         challenge = TokenUtil.newToken();
@@ -37,6 +39,19 @@ public class VotifierSession {
 
     public boolean hasCompletedVote() {
         return hasCompletedVote;
+    }
+
+    public void setRemoteAddress(String address, int port) {
+        this.realClientAddress = address;
+        this.realClientPort = port;
+    }
+
+    public String getRealClientAddress() {
+        return realClientAddress;
+    }
+
+    public int getRealClientPort() {
+        return realClientPort;
     }
 
     public enum ProtocolVersion {

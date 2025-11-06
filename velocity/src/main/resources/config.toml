@@ -5,6 +5,11 @@ host = "%ip%"
 # Port to listen for new votes on
 port = 8192
 
+# HAProxy Protocol Support
+# Enable this if your server is behind HAProxy and you want to extract the real client IP addresses.
+# Requires HAProxy to be configured with "send-proxy" or "send-proxy-v2" for the backend.
+haproxy-protocol = false
+
 # Setting this option to true will disable handling of Protocol v1 packets. While the old protocol is not secure, this
 # option is currently not recommended as most voting sites only support the old protocol at present. However, if you are
 # using NuVotifier's proxy forwarding mechanism, enabling this option will increase your server's security.
